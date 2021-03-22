@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
+import { updateColors } from "./color-context";
+import { StrictMode } from "react";
+import App from "./App";
 
 const Svg = styled.svg`
   position: absolute;
@@ -55,34 +58,63 @@ const Button = styled.button`
 `;
 
 class Modal extends React.Component {
+  constructor() {
+    super();
+    this.formElem = React.createRef();
+  }
+
   render() {
     const { visible, onClose } = this.props;
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+      e.preventDefault();
+      let formData = new FormData(this.formElem.current);
+      let color = {};
+      for (var pair of formData.entries()) {
+        if (pair[0] === "code") pair[1] = pair[1].toUpperCase();
+        color[pair[0]] = pair[1];
+      }
+      updateColors(formData.get("code"), color);
+      ReactDOM.render(
+        <StrictMode>
+          <App />
+        </StrictMode>,
+        document.getElementById("root")
+      );
       onClose();
+      /**
+       * 橙色(#fa8c35)：界于红色和黄色之间的混合色。
+████ 茶色(#b35c44)：一种比栗色稍红的棕橙色至浅棕色
+████ 驼色(#a88462)：一种比咔叽色稍红而微淡、比肉桂色黄而稍淡和比核桃棕色黄而暗的浅黄棕色
+
+████ 昏黄(#c89b40)：形容天色、灯光等呈幽暗的黄色
+████ 栗色(#60281e)：栗壳的颜色。即紫黑色
+       */
     };
     return (
       visible &&
       ReactDOM.createPortal(
         <StyledModalRoot onClick={onClose}>
           <div onClick={(e) => e.stopPropagation()} className="box">
-            <div className="title">title</div>
-            <div className="content">
+            <div className="title">添加颜色</div>
+            <form ref={this.formElem} className="content">
               <label className="item">
                 颜色名称：
-                <input />
+                <input name="name" />
               </label>
               <label className="item">
                 颜色代码：
-                <input />
+                <input name="code" />
               </label>
               <label className="item">
                 相关描述：
-                <input />
+                <input name="desc" />
               </label>
-            </div>
+            </form>
             <div className="bottom">
-              <Button onClick={onClose}>Close</Button>
-              <Button onClick={onSubmit}>Submit</Button>
+              <Button onClick={onClose}>取消</Button>
+              <Button type="submit" onClick={onSubmit.bind(this)}>
+                提交
+              </Button>
             </div>
           </div>
         </StyledModalRoot>,
@@ -96,7 +128,7 @@ class Add extends React.Component {
   constructor() {
     super();
     this.state = {
-      visible: true,
+      visible: false,
       showModal: () => {
         this.setState({ visible: true });
       },

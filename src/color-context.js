@@ -1,5 +1,15 @@
 import React from "react";
-export const colors = {
+
+function colorInit() {
+  try {
+    let localValue = window.localStorage.getItem("colors");
+    return JSON.parse(localValue);
+  } catch (e) {
+    return undefined;
+  }
+}
+
+export const colors = colorInit() || {
   "#c3272b": {
     name: "赤色",
     code: "#c3272b",
@@ -10,6 +20,11 @@ export const colors = {
     code: "#d3b17d",
     desc: "Hi, my wonderful yellow ."
   }
+};
+
+export const updateColors = (key, value) => {
+  colors[key] = value;
+  window.localStorage.setItem("colors", JSON.stringify(colors));
 };
 
 export const ColorContext = React.createContext({

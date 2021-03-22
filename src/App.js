@@ -18,8 +18,8 @@ const P = styled.p`
 `;
 
 /*
-2. 持久化存储。 redux-persist ？ 还是直接 localstorage ？
-3. 考虑是否可以把这个下载下来，在保存了这个网站之后。
+1. 代码的封装优化，页面自动更新那里，看一下怎么弄...
+2. 样式的调整
 */
 
 class App extends React.Component {
