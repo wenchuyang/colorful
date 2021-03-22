@@ -1,16 +1,16 @@
 {
   "name": "colorful",
   "version": "1.0.0",
-  "description": "",
+  "description": "use react to make a color's card",
   "keywords": [
     "react"
   ],
   "main": "src/index.js",
   "dependencies": {
     "@babel/runtime": "7.13.8",
+    "file-loader": "6.2.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "react-redux": "7.2.2",
     "react-scripts": "4.0.0",
     "redux": "4.0.5",
     "styled-components": "5.2.1"

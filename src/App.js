@@ -7,6 +7,7 @@ import Add from "./Add";
 
 const Wrapper = styled.div`
   display: flex;
+  min-height: 100vh;
   text-align: center;
   background-color: ${(props) => props.theme || "white"};
   color: ${(props) => (props.theme.length === 7 ? "#fff" : "#000")};
