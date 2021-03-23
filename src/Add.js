@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { updateColors } from "./color-context";
 import { StrictMode } from "react";
 import App from "./App";
+import Modal from "./components/Modal";
 
 const Svg = styled.svg`
   position: absolute;
@@ -13,113 +14,58 @@ const Svg = styled.svg`
   height: 3.2rem;
   cursor: pointer;
 `;
-const StyledModalRoot = styled.div`
-  position: fixed;
-  z-index: 1001;
-  left: 0;
-  top: 0;
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-
-  > .box {
-    position: relative;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
-      0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
-    > .title {
-      padding: 0.4rem 1.2rem;
-      text-align: center;
-      font-size: 1.2rem;
-      background: #ccc;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-    }
-    > .content {
-      display: flex;
-      flex-direction: column;
-      padding: 0.4rem 1.2rem;
-      > .item {
-        margin: 0.4rem 0;
-      }
-    }
-    > .bottom {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.2rem 1.2rem 0.6rem;
-    }
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  > .item {
+    margin-top: 0.2rem;
   }
 `;
-const Button = styled.button`
-  padding: 0.2rem 0.6rem;
-`;
 
-class Modal extends React.Component {
-  constructor() {
-    super();
+class AddModal extends React.Component {
+  constructor(props) {
+    super(props);
     this.formElem = React.createRef();
-  }
-
-  render() {
-    const { visible, onClose } = this.props;
-    const onSubmit = (e) => {
-      e.preventDefault();
-      let formData = new FormData(this.formElem.current);
-      let color = {};
-      for (var pair of formData.entries()) {
-        if (pair[0] === "code") pair[1] = pair[1].toUpperCase();
-        color[pair[0]] = pair[1];
+    this.state = {
+      submit: (e) => {
+        e.preventDefault();
+        let formData = new FormData(this.formElem.current);
+        let color = {};
+        for (var pair of formData.entries()) {
+          if (pair[0] === "code") pair[1] = pair[1].toUpperCase();
+          color[pair[0]] = pair[1];
+        }
+        updateColors(formData.get("code"), color);
+        this.props.onClose();
       }
-      updateColors(formData.get("code"), color);
-      ReactDOM.render(
-        <StrictMode>
-          <App />
-        </StrictMode>,
-        document.getElementById("root")
-      );
-      onClose();
-      /**
-       * 橙色(#fa8c35)：界于红色和黄色之间的混合色。
-████ 茶色(#b35c44)：一种比栗色稍红的棕橙色至浅棕色
-████ 驼色(#a88462)：一种比咔叽色稍红而微淡、比肉桂色黄而稍淡和比核桃棕色黄而暗的浅黄棕色
-
-████ 昏黄(#c89b40)：形容天色、灯光等呈幽暗的黄色
-████ 栗色(#60281e)：栗壳的颜色。即紫黑色
-       */
+    };
+  }
+  render() {
+    const config = {
+      visible: this.props.visible,
+      onClose: this.props.onClose,
+      onSubmit: this.state.submit,
+      title: "添加颜色",
+      cancelText: "cancel",
+      submitText: "submit"
     };
     return (
-      visible &&
-      ReactDOM.createPortal(
-        <StyledModalRoot onClick={onClose}>
-          <div onClick={(e) => e.stopPropagation()} className="box">
-            <div className="title">添加颜色</div>
-            <form ref={this.formElem} className="content">
-              <label className="item">
-                颜色名称：
-                <input name="name" />
-              </label>
-              <label className="item">
-                颜色代码：
-                <input name="code" />
-              </label>
-              <label className="item">
-                相关描述：
-                <input name="desc" />
-              </label>
-            </form>
-            <div className="bottom">
-              <Button onClick={onClose}>取消</Button>
-              <Button type="submit" onClick={onSubmit.bind(this)}>
-                提交
-              </Button>
-            </div>
-          </div>
-        </StyledModalRoot>,
-        document.body
-      )
+      <Modal {...config}>
+        <Form ref={this.formElem}>
+          <label className="item">
+            颜色名称：
+            <input name="name" />
+          </label>
+          <label className="item">
+            颜色代码：
+            <input name="code" />
+          </label>
+          <label className="item">
+            相关描述：
+            <input name="desc" />
+          </label>
+        </Form>
+      </Modal>
     );
   }
 }
@@ -139,8 +85,8 @@ class Add extends React.Component {
   }
   render() {
     return (
-      <div>
-        <Modal
+      <div onClick={this.state.showModal}>
+        <AddModal
           visible={this.state.visible}
           onClose={this.state.handleCloseModal}
         />
