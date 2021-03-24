@@ -33,15 +33,37 @@ const Form = styled.form`
 `;
 function AddModal(props) {
   this.formElem = React.createRef();
+  function getFormatColor(colorStr) {
+    let pattern = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+    colorStr = colorStr.trim();
+    if (pattern.test(colorStr)) {
+      colorStr = colorStr.toUpperCase();
+      let newStr = colorStr;
+      if (colorStr.length === 4) {
+        newStr = "#";
+        newStr = newStr.concat(
+          colorStr.slice(1, 2).repeat(2),
+          colorStr.slice(2, 3).repeat(2),
+          colorStr.slice(3, 4).repeat(2)
+        );
+      }
+      return newStr;
+    }
+    return "#000";
+  }
   function submit(e) {
     e.preventDefault();
     let formData = new FormData(this.formElem.current);
     let color = {};
+    let key = "";
     for (var pair of formData.entries()) {
-      if (pair[0] === "code") pair[1] = pair[1].toUpperCase();
-      color[pair[0]] = pair[1];
+      if (pair[0] === "code") {
+        pair[1] = getFormatColor(pair[1]);
+        key = pair[1];
+      }
+      color[pair[0]] = pair[1].trim();
     }
-    props.setColors(formData.get("code"), color);
+    props.setColors(key, color);
     props.onClose();
   }
   const config = {
