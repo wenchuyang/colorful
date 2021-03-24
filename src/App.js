@@ -7,19 +7,26 @@ import { ColorContext } from "./color-context.js";
 
 const Wrapper = styled.div`
   display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
   min-height: 100vh;
   text-align: center;
   background-color: ${(props) => props.theme || "white"};
-  color: ${(props) => (props.theme.length === 7 ? "#fff" : "#000")};
+  transition: all 1s ease-in-out;
 `;
-const P = styled.p`
-  text-align: left;
-  text-indent: 2em;
+const Desc = styled.div`
+  width: 26%;
+  color: ${(props) => (props.theme ? "#fff" : "#000")};
+  transition: color 1s;
+  &:hover {
+    color: ${(props) => (props.theme ? "#000" : "#fff")};
+  }
+  cursor: pointer;
+  > .paragraph {
+    text-align: left;
+    text-indent: 2em;
+  }
 `;
-
-/*
-2. 样式的调整
-*/
 
 function App() {
   function colorInit() {
@@ -72,7 +79,7 @@ function App() {
         setColors: setColors
       }}
     >
-      <Wrapper theme={appState.color.code}>
+      <Wrapper theme={appState.color.code} className="clearfix">
         <Btns />
         <Description />
         <Add />
@@ -80,19 +87,17 @@ function App() {
     </ColorContext.Provider>
   );
 }
-
 function Description() {
   return (
     <ColorContext.Consumer>
       {({ color }) => (
-        <div>
+        <Desc theme={color.code}>
           <h1>{color.name}</h1>
           <h2>{color.code}</h2>
-          <P>{color.desc}</P>
-        </div>
+          <p className="paragraph">{color.desc}</p>
+        </Desc>
       )}
     </ColorContext.Consumer>
   );
 }
-
 export default App;

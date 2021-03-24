@@ -15,7 +15,20 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   > .item {
-    margin-top: 0.2rem;
+    margin-top: 0.4rem;
+    > .value {
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 0.2rem;
+      &:focus {
+        outline: none;
+      }
+    }
+    > .desc-text {
+      resize: none;
+      vertical-align: top;
+    }
   }
 `;
 function AddModal(props) {
@@ -36,23 +49,23 @@ function AddModal(props) {
     onClose: props.onClose,
     onSubmit: submit,
     title: "添加颜色",
-    cancelText: "cancel",
-    submitText: "submit"
+    cancelText: "取消",
+    submitText: "提交"
   };
   return (
     <Modal {...config}>
       <Form ref={this.formElem}>
         <label className="item">
           颜色名称：
-          <input name="name" />
+          <input name="name" className="value" />
         </label>
         <label className="item">
           颜色代码：
-          <input name="code" />
+          <input name="code" className="value" />
         </label>
         <label className="item">
           相关描述：
-          <input name="desc" />
+          <textarea name="desc" rows="3" className="value desc-text" />
         </label>
       </Form>
     </Modal>
@@ -67,7 +80,7 @@ function Add() {
     setVisible(false);
   };
   return (
-    <div onClick={showModal}>
+    <div>
       <ColorContext.Consumer>
         {({ setColors }) => (
           <AddModal

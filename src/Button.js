@@ -3,13 +3,17 @@ import styled from "styled-components";
 import { ColorContext } from "./color-context.js";
 
 const Btn = styled.div`
-  margin-top: 0.4rem;
-  display: inline-block;
   padding: 0.4rem 1rem;
+  min-width: 8rem;
+  min-height: 3.8rem;
   background-color: ${(props) => props.color || "white"};
   color: ${(props) => (props.color ? "#fff" : "#000")};
   font-size: 1.2rem;
   cursor: pointer;
+  &:hover {
+    color: ${(props) => (props.color ? "#000" : "#fff")};
+    transition: color 1s linear;
+  }
 `;
 
 function Button(props) {

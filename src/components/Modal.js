@@ -15,7 +15,7 @@ const StyledModalRoot = styled.div`
 
   > .box {
     position: relative;
-    background: white;
+    background: whitesmoke;
     border-radius: 10px;
     box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
       0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
@@ -23,7 +23,8 @@ const StyledModalRoot = styled.div`
       padding: 0.4rem 1.2rem;
       text-align: center;
       font-size: 1.2rem;
-      background: #ccc;
+      background: #14967b;
+      color: white;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
     }
@@ -38,7 +39,12 @@ const StyledModalRoot = styled.div`
   }
 `;
 const Button = styled.button`
-  padding: 0.2rem 0.6rem;
+  padding: 0.4rem 0.6rem;
+  min-width: 42%;
+  background: #14967b;
+  color: white;
+  border: 1px solid grey;
+  border-radius: 6px;
 `;
 
 function Dialog(props) {
