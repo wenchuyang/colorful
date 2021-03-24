@@ -1,7 +1,6 @@
 import "./styles.css";
 import Btns from "./Btns";
 import styled from "styled-components";
-import { ColorContext, colors } from "./color-context";
 import React from "react";
 import Add from "./Add";
 
@@ -22,10 +21,47 @@ const P = styled.p`
 2. 样式的调整
 */
 
+// const ColorContext = React.createContext({
+//   color: Object.values(colors)[0],
+//   setColor: () => {}
+// });
+
 class App extends React.Component {
   constructor() {
     super();
+    function colorInit() {
+      try {
+        let localValue = window.localStorage.getItem("colors");
+        return JSON.parse(localValue);
+      } catch (e) {
+        return undefined;
+      }
+    }
+
+    const colors = colorInit() || {
+      "#c3272b": {
+        name: "赤色",
+        code: "#c3272b",
+        desc: "Hi, my wonderful red ."
+      },
+      "#D3B17D": {
+        name: "枯黄",
+        code: "#d3b17d",
+        desc: "Hi, my wonderful yellow ."
+      }
+    };
     this.state = {
+      colors: colors,
+      setColors: (key, value) => {
+        let temp = {
+          ...this.state.colors
+        };
+        temp[key] = value;
+        this.setState({
+          colors: temp
+        });
+        window.localStorage.setItem("colors", JSON.stringify(temp));
+      },
       color: Object.values(colors)[0],
       setColor: (color) => {
         this.setState({
@@ -36,28 +72,28 @@ class App extends React.Component {
   }
   render() {
     return (
-      <ColorContext.Provider value={this.state}>
-        <Wrapper theme={this.state.color.code}>
-          <Btns />
-          <Description />
-          <Add />
-        </Wrapper>
-      </ColorContext.Provider>
+      // <ColorContext.Provider value={this.state}>
+      <Wrapper theme={this.state.color.code}>
+        <Btns colors={this.state.colors} setColor={this.state.setColor} />
+        <Description color={this.state.color} />
+        <Add setColors={this.state.setColors} />
+      </Wrapper>
+      // </ColorContext.Provider>
     );
   }
 }
 
-function Description() {
+function Description(props) {
   return (
-    <ColorContext.Consumer>
-      {(param) => (
-        <div>
-          <h1>{param.color.name}</h1>
-          <h2>{param.color.code}</h2>
-          <P>{param.color.desc}</P>
-        </div>
-      )}
-    </ColorContext.Consumer>
+    // <ColorContext.Consumer>
+    // {(param) => (
+    <div>
+      <h1>{props.color.name}</h1>
+      <h2>{props.color.code}</h2>
+      <P>{props.color.desc}</P>
+    </div>
+    //)}
+    //</ColorContext.Consumer>
   );
 }
 

@@ -1,9 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import styled from "styled-components";
-import { updateColors } from "./color-context";
-import { StrictMode } from "react";
-import App from "./App";
 import Modal from "./components/Modal";
 
 const Svg = styled.svg`
@@ -35,7 +31,7 @@ class AddModal extends React.Component {
           if (pair[0] === "code") pair[1] = pair[1].toUpperCase();
           color[pair[0]] = pair[1];
         }
-        updateColors(formData.get("code"), color);
+        this.props.setColors(formData.get("code"), color);
         this.props.onClose();
       }
     };
@@ -87,6 +83,7 @@ class Add extends React.Component {
     return (
       <div onClick={this.state.showModal}>
         <AddModal
+          setColors={this.props.setColors}
           visible={this.state.visible}
           onClose={this.state.handleCloseModal}
         />

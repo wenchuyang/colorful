@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { ColorContext } from "./color-context";
 
 const Btn = styled.div`
   margin-top: 0.4rem;
@@ -14,17 +13,14 @@ const Btn = styled.div`
 
 function Button(props) {
   return (
-    <ColorContext.Consumer>
-      {(param) => (
-        <Btn
-          onClick={() => param.setColor(props.color)}
-          color={props.color.code}
-        >
-          <div>{props.color.name}</div>
-          <div>{props.color.code}</div>
-        </Btn>
-      )}
-    </ColorContext.Consumer>
+    // <ColorContext.Consumer>
+    //   {(param) => (
+    <Btn onClick={() => props.setColor(props.color)} color={props.color.code}>
+      <div>{props.color.name}</div>
+      <div>{props.color.code}</div>
+    </Btn>
+    // )}
+    //</ColorContext.Consumer>
   );
 }
 export default Button;
