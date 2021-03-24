@@ -48,7 +48,7 @@ function AddModal(props) {
       }
       return newStr;
     }
-    return "#000";
+    return "#000000";
   }
   const formElem = useRef(null);
   const submit = (e)=> {
