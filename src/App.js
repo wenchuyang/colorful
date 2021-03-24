@@ -1,7 +1,7 @@
 import "./styles.css";
 import Btns from "./Btns";
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 import Add from "./Add";
 
 const Wrapper = styled.div`
@@ -26,61 +26,57 @@ const P = styled.p`
 //   setColor: () => {}
 // });
 
-class App extends React.Component {
-  constructor() {
-    super();
-    function colorInit() {
-      try {
-        let localValue = window.localStorage.getItem("colors");
-        return JSON.parse(localValue);
-      } catch (e) {
-        return undefined;
-      }
+function App() {
+  function colorInit() {
+    try {
+      let localValue = window.localStorage.getItem("colors");
+      return JSON.parse(localValue);
+    } catch (e) {
+      return undefined;
     }
-
-    const colors = colorInit() || {
-      "#c3272b": {
-        name: "赤色",
-        code: "#c3272b",
-        desc: "Hi, my wonderful red ."
-      },
-      "#D3B17D": {
-        name: "枯黄",
-        code: "#d3b17d",
-        desc: "Hi, my wonderful yellow ."
-      }
-    };
-    this.state = {
-      colors: colors,
-      setColors: (key, value) => {
-        let temp = {
-          ...this.state.colors
-        };
-        temp[key] = value;
-        this.setState({
-          colors: temp
-        });
-        window.localStorage.setItem("colors", JSON.stringify(temp));
-      },
-      color: Object.values(colors)[0],
-      setColor: (color) => {
-        this.setState({
-          color: color
-        });
-      }
-    };
   }
-  render() {
-    return (
-      // <ColorContext.Provider value={this.state}>
-      <Wrapper theme={this.state.color.code}>
-        <Btns colors={this.state.colors} setColor={this.state.setColor} />
-        <Description color={this.state.color} />
-        <Add setColors={this.state.setColors} />
-      </Wrapper>
-      // </ColorContext.Provider>
-    );
-  }
+  const colors = colorInit() || {
+    "#c3272b": {
+      name: "赤色",
+      code: "#c3272b",
+      desc: "Hi, my wonderful red ."
+    },
+    "#D3B17D": {
+      name: "枯黄",
+      code: "#d3b17d",
+      desc: "Hi, my wonderful yellow ."
+    }
+  };
+  const [appState, setAppState] = useState({
+    colors: colors,
+    color: Object.values(colors)[0]
+  });
+  const setColors = (key, value) => {
+    let temp = {
+      ...appState.colors
+    };
+    temp[key] = value;
+    setAppState({
+      ...appState,
+      colors: temp
+    });
+    window.localStorage.setItem("colors", JSON.stringify(temp));
+  };
+  const setColor = (color) => {
+    setAppState({
+      ...appState,
+      color: color
+    });
+  };
+  return (
+    // <ColorContext.Provider value={this.state}>
+    <Wrapper theme={appState.color.code}>
+      <Btns colors={appState.colors} setColor={setColor} />
+      <Description color={appState.color} />
+      <Add setColors={setColors} />
+    </Wrapper>
+    // </ColorContext.Provider>
+  );
 }
 
 function Description(props) {

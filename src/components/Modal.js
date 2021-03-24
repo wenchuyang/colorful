@@ -41,40 +41,34 @@ const Button = styled.button`
   padding: 0.2rem 0.6rem;
 `;
 
-class Dialog extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const {
-      visible,
-      onClose,
-      onSubmit,
-      title,
-      children,
-      cancelText,
-      submitText
-    } = this.props;
-    return (
-      visible &&
-      ReactDOM.createPortal(
-        <StyledModalRoot onClick={onClose}>
-          <div onClick={(e) => e.stopPropagation()} className="box">
-            <div className="title">{title || "信息"}</div>
-            <div className="content">{children}</div>
-            <div className="bottom">
-              <Button onClick={onClose}>{cancelText || "取消"}</Button>
-              <Button type="submit" onClick={onSubmit}>
-                {submitText || "提交"}
-              </Button>
-            </div>
+function Dialog(props) {
+  const {
+    visible,
+    onClose,
+    onSubmit,
+    title,
+    children,
+    cancelText,
+    submitText
+  } = props;
+  return (
+    visible &&
+    ReactDOM.createPortal(
+      <StyledModalRoot onClick={onClose}>
+        <div onClick={(e) => e.stopPropagation()} className="box">
+          <div className="title">{title || "信息"}</div>
+          <div className="content">{children}</div>
+          <div className="bottom">
+            <Button onClick={onClose}>{cancelText || "取消"}</Button>
+            <Button type="submit" onClick={onSubmit}>
+              {submitText || "提交"}
+            </Button>
           </div>
-        </StyledModalRoot>,
-        document.body
-      )
-    );
-  }
+        </div>
+      </StyledModalRoot>,
+      document.body
+    )
+  );
 }
 
 export default Dialog;
