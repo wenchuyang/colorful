@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { ColorContext } from "./color-context";
 import Modal from "./components/Modal";
@@ -32,7 +32,6 @@ const Form = styled.form`
   }
 `;
 function AddModal(props) {
-  this.formElem = React.createRef();
   function getFormatColor(colorStr) {
     let pattern = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
     colorStr = colorStr.trim();
@@ -51,9 +50,10 @@ function AddModal(props) {
     }
     return "#000";
   }
-  function submit(e) {
+  const formElem = useRef(null);
+  const submit = (e)=> {
     e.preventDefault();
-    let formData = new FormData(this.formElem.current);
+    let formData = new FormData(formElem.current);
     let color = {};
     let key = "";
     for (var pair of formData.entries()) {
@@ -76,7 +76,7 @@ function AddModal(props) {
   };
   return (
     <Modal {...config}>
-      <Form ref={this.formElem}>
+      <Form ref={formElem}>
         <label className="item">
           颜色名称：
           <input name="name" className="value" />
