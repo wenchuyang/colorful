@@ -13,6 +13,7 @@
     "react-scripts": "4.0.0",
     "styled-components": "5.2.1"
   },
+  "homepage": "./build",
   "devDependencies": {
     "typescript": "4.1.3"
   },
