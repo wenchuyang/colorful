@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Modal from "./components/Modal";
 
 const Svg = styled.svg`
-  position: absolute;
+  position: fixed;
   bottom: 2rem;
   right: 2rem;
   width: 3.2rem;
