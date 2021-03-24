@@ -3,6 +3,7 @@ import Btns from "./Btns";
 import styled from "styled-components";
 import React, { useState } from "react";
 import Add from "./Add";
+import { ColorContext } from "./color-context.js";
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,14 +18,8 @@ const P = styled.p`
 `;
 
 /*
-1. 代码的封装优化，页面自动更新那里，看一下怎么弄...
 2. 样式的调整
 */
-
-// const ColorContext = React.createContext({
-//   color: Object.values(colors)[0],
-//   setColor: () => {}
-// });
 
 function App() {
   function colorInit() {
@@ -69,27 +64,34 @@ function App() {
     });
   };
   return (
-    // <ColorContext.Provider value={this.state}>
-    <Wrapper theme={appState.color.code}>
-      <Btns colors={appState.colors} setColor={setColor} />
-      <Description color={appState.color} />
-      <Add setColors={setColors} />
-    </Wrapper>
-    // </ColorContext.Provider>
+    <ColorContext.Provider
+      value={{
+        color: appState.color,
+        setColor: setColor,
+        colors: appState.colors,
+        setColors: setColors
+      }}
+    >
+      <Wrapper theme={appState.color.code}>
+        <Btns />
+        <Description />
+        <Add />
+      </Wrapper>
+    </ColorContext.Provider>
   );
 }
 
-function Description(props) {
+function Description() {
   return (
-    // <ColorContext.Consumer>
-    // {(param) => (
-    <div>
-      <h1>{props.color.name}</h1>
-      <h2>{props.color.code}</h2>
-      <P>{props.color.desc}</P>
-    </div>
-    //)}
-    //</ColorContext.Consumer>
+    <ColorContext.Consumer>
+      {({ color }) => (
+        <div>
+          <h1>{color.name}</h1>
+          <h2>{color.code}</h2>
+          <P>{color.desc}</P>
+        </div>
+      )}
+    </ColorContext.Consumer>
   );
 }
 

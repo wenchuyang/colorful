@@ -1,25 +1,24 @@
 import React from "react";
 import Button from "./Button";
 import styled from "styled-components";
+import { ColorContext } from "./color-context";
 
 const BtnWrapper = styled.div`
   padding: 0.6rem;
   column-gap: 0.6rem;
 `;
 
-function Btns(props) {
+function Btns() {
   return (
-    // <ColorContext.Consumer>
-    // { {value=>{ }
-    // return (
-    <BtnWrapper>
-      {Object.keys(props.colors).map((key) => (
-        <Button key={key} color={props.colors[key]} setColor={props.setColor} />
-      ))}
-    </BtnWrapper>
-    // )
-    // }}
-    // </ColorContext.Consumer>
+    <ColorContext.Consumer>
+      {({ colors }) => (
+        <BtnWrapper>
+          {Object.keys(colors).map((key) => (
+            <Button key={key} color={colors[key]} />
+          ))}
+        </BtnWrapper>
+      )}
+    </ColorContext.Consumer>
   );
 }
 

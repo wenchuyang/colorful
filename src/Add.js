@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { ColorContext } from "./color-context";
 import Modal from "./components/Modal";
 
 const Svg = styled.svg`
@@ -57,7 +58,7 @@ function AddModal(props) {
     </Modal>
   );
 }
-function Add(props) {
+function Add() {
   const [visible, setVisible] = useState(false);
   const showModal = () => {
     setVisible(true);
@@ -67,11 +68,16 @@ function Add(props) {
   };
   return (
     <div onClick={showModal}>
-      <AddModal
-        setColors={props.setColors}
-        visible={visible}
-        onClose={handleCloseModal}
-      />
+      <ColorContext.Consumer>
+        {({ setColors }) => (
+          <AddModal
+            setColors={setColors}
+            visible={visible}
+            onClose={handleCloseModal}
+          />
+        )}
+      </ColorContext.Consumer>
+
       <Svg viewBox="0 0 1024 1024" onClick={showModal}>
         <path
           d="M732.16 476.586667h-183.466667v-183.466667a35.84 35.84 0 1 0-72.106666 0v183.466667H291.84a35.84 35.84 0 1 0 0 72.106666h184.32v182.613334a35.84 35.84 0 1 0 72.106667 0v-182.613334h183.466666a35.84 35.84 0 1 0 0-72.106666z m91.306667 346.453333A439.893333 439.893333 0 1 1 341.333333 106.666667a439.893333 439.893333 0 0 1 481.706667 716.373333zM512 0a512 512 0 1 0 512 512A512 512 0 0 0 512 0z"
