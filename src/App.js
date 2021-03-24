@@ -52,7 +52,7 @@ function App() {
     };
     temp[key] = value;
     setAppState({
-      ...appState,
+      color: value,
       colors: temp
     });
     window.localStorage.setItem("colors", JSON.stringify(temp));
